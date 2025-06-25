@@ -1,130 +1,134 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { Zap, Check, X, Settings, Bot, User, ArrowRight } from 'lucide-react';
+import { Settings, CheckCircle, AlertCircle, Zap, ArrowRight, Sparkles, Download } from 'lucide-react';
 
 const FeatureEngineeringPanel = () => {
-  const featureImportanceData = [
-    { feature: 'Age_x_Income', importance: 0.24, type: 'cross', status: 'accepted' },
-    { feature: 'Email_Length_Poly', importance: 0.18, type: 'polynomial', status: 'accepted' },
-    { feature: 'Contract_Duration_Bin', importance: 0.15, type: 'binning', status: 'pending' },
-    { feature: 'Audio_Sentiment_Cross', importance: 0.12, type: 'cross', status: 'accepted' },
-    { feature: 'PDF_Pages_Log', importance: 0.08, type: 'transform', status: 'rejected' }
-  ];
+  const [selectedFeature, setSelectedFeature] = useState('');
 
-  const transformationLogs = [
-    { time: '14:23', action: 'Applied polynomial transform to Email_Length', status: 'success' },
-    { time: '14:20', action: 'Created Age_x_Income interaction term', status: 'success' },
-    { time: '14:18', action: 'Binned Contract_Duration into 5 groups', status: 'pending' },
-    { time: '14:15', action: 'Generated cross-feature for Audio_Sentiment', status: 'success' }
+  const features = [
+    { name: 'age_normalized', importance: 0.23, status: 'optimized', type: 'numerical' },
+    { name: 'income_log', importance: 0.18, status: 'optimized', type: 'numerical' },
+    { name: 'email_sentiment', importance: 0.15, status: 'processing', type: 'text' },
+    { name: 'contract_duration', importance: 0.12, status: 'optimized', type: 'categorical' },
+    { name: 'interaction_frequency', importance: 0.09, status: 'pending', type: 'numerical' }
   ];
 
   const transformationMap = [
-    { feature: 'Age', original: 'Age', transformation: 'Min-Max Scaling', method: 'range(0,1)', origin: 'manual', status: 'active' },
-    { feature: 'Income', original: 'Income', transformation: 'Log Transform', method: 'log(x+1)', origin: 'AI-suggested', status: 'active' },
-    { feature: 'Email_Length', original: 'Email_Length', transformation: 'Polynomial', method: 'x^2, x^3', origin: 'AI-suggested', status: 'active' },
-    { feature: 'Contract_Duration', original: 'Contract_Duration', transformation: 'Binning', method: '5 bins', origin: 'manual', status: 'pending' },
-    { feature: 'Audio_Quality', original: 'Audio_Quality', transformation: 'Standard Scaling', method: 'z-score', origin: 'manual', status: 'active' },
-    { feature: 'PDF_Pages', original: 'PDF_Pages', transformation: 'Log Transform', method: 'log(x)', origin: 'AI-suggested', status: 'rejected' }
+    { 
+      originalFeature: 'age', 
+      transformedFeature: 'age_normalized', 
+      transformation: 'Min-Max Scaling', 
+      origin: 'AI-Suggested',
+      status: 'applied',
+      improvement: '+12% correlation'
+    },
+    { 
+      originalFeature: 'income', 
+      transformedFeature: 'income_log', 
+      transformation: 'Log Transform', 
+      origin: 'Manual',
+      status: 'applied',
+      improvement: '+8% correlation'
+    },
+    { 
+      originalFeature: 'email_text', 
+      transformedFeature: 'email_sentiment', 
+      transformation: 'Sentiment Analysis', 
+      origin: 'AI-Suggested',
+      status: 'processing',
+      improvement: 'TBD'
+    },
+    { 
+      originalFeature: 'contract_type', 
+      transformedFeature: 'contract_duration', 
+      transformation: 'One-Hot Encoding', 
+      origin: 'Manual',
+      status: 'applied',
+      improvement: '+5% correlation'
+    }
+  ];
+
+  const logs = [
+    { time: '14:23', action: 'Applied log transformation to income', status: 'success' },
+    { time: '14:20', action: 'Generated polynomial features for age', status: 'success' },
+    { time: '14:18', action: 'Started sentiment analysis on email text', status: 'processing' },
+    { time: '14:15', action: 'Normalized numerical features', status: 'success' }
+  ];
+
+  const aiSuggestions = [
+    { feature: 'interaction_frequency', suggestion: 'Apply square root transformation', confidence: 0.89, reason: 'Reduces skewness' },
+    { feature: 'purchase_amount', suggestion: 'Create binned categories', confidence: 0.76, reason: 'Non-linear patterns detected' },
+    { feature: 'email_timestamp', suggestion: 'Extract time-based features', confidence: 0.84, reason: 'Temporal patterns found' }
   ];
 
   return (
-    <Card className="h-full flex flex-col border-2 border-yellow-200 shadow-lg">
-      <CardHeader className="pb-4 flex-shrink-0">
+    <Card className="h-full flex flex-col border-2 border-purple-200 shadow-lg">
+      <CardHeader className="pb-3 flex-shrink-0">
         <div className="flex items-center justify-between">
-          <CardTitle className="flex items-center gap-2 text-yellow-700 text-lg">
-            <Zap className="w-5 h-5" />
+          <CardTitle className="flex items-center gap-2 text-purple-700 text-lg">
+            <Settings className="w-5 h-5" />
             Feature Engineering & Auto-Generation
           </CardTitle>
-          <Badge variant="secondary" className="bg-yellow-100 text-yellow-800">
-            Active
+          <Badge variant="secondary" className="bg-purple-100 text-purple-800">
+            Processing
           </Badge>
         </div>
       </CardHeader>
       
       <CardContent className="flex-1 overflow-hidden">
         <Tabs defaultValue="importance" className="h-full flex flex-col">
-          <TabsList className="grid w-full grid-cols-4 mb-4">
+          <TabsList className="grid w-full grid-cols-4 mb-3">
             <TabsTrigger value="importance" className="text-xs">Importance</TabsTrigger>
+            <TabsTrigger value="transformation" className="text-xs">Transform Map</TabsTrigger>
             <TabsTrigger value="logs" className="text-xs">Logs</TabsTrigger>
             <TabsTrigger value="suggestions" className="text-xs">AI Suggestions</TabsTrigger>
-            <TabsTrigger value="transformation" className="text-xs">Transform Map</TabsTrigger>
           </TabsList>
           
-          <TabsContent value="importance" className="flex-1 space-y-3">
-            <div className="h-32">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={featureImportanceData}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-                  <XAxis dataKey="feature" tick={{ fontSize: 8 }} />
-                  <YAxis tick={{ fontSize: 10 }} />
-                  <Tooltip />
-                  <Bar dataKey="importance" fill="#eab308" />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-            
-            <div className="bg-green-50 p-3 rounded-lg border border-green-200">
-              <div className="text-sm font-medium text-green-700">Harmony Output</div>
-              <div className="text-sm text-green-800">Auto-generated 8 new interaction terms. 3 accepted.</div>
-            </div>
-          </TabsContent>
-          
-          <TabsContent value="logs" className="flex-1 space-y-2">
-            <div className="space-y-2 max-h-40 overflow-y-auto">
-              {transformationLogs.map((log, index) => (
-                <div key={index} className="flex items-start gap-2 p-2 bg-slate-50 rounded-lg border">
-                  <div className={`w-2 h-2 rounded-full mt-2 flex-shrink-0 ${
-                    log.status === 'success' ? 'bg-green-500' :
-                    log.status === 'pending' ? 'bg-yellow-500' : 'bg-red-500'
+          <TabsContent value="importance" className="flex-1 space-y-2">
+            <div className="space-y-1 max-h-32 overflow-y-auto">
+              {features.map((feature, index) => (
+                <div key={index} className="flex items-center gap-3 p-2 bg-slate-50 rounded-lg border">
+                  <div className={`w-3 h-3 rounded-full flex-shrink-0 ${
+                    feature.status === 'optimized' ? 'bg-green-500' :
+                    feature.status === 'processing' ? 'bg-blue-500 animate-pulse' : 'bg-gray-300'
                   }`}></div>
-                  <div className="flex-1 min-w-0">
-                    <div className="text-xs text-slate-400">{log.time}</div>
-                    <div className="text-sm text-slate-700">{log.action}</div>
+                  <div className="flex-1">
+                    <div className="text-sm font-medium text-slate-900">{feature.name}</div>
+                    <div className="text-xs text-slate-500">{feature.type}</div>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-sm font-bold text-purple-600">{feature.importance}</div>
+                    <Badge variant={feature.status === 'optimized' ? 'default' : 'secondary'} className="text-xs">
+                      {feature.status}
+                    </Badge>
                   </div>
                 </div>
               ))}
             </div>
-          </TabsContent>
-          
-          <TabsContent value="suggestions" className="flex-1 space-y-3">
-            <div className="space-y-2">
-              <div className="flex items-center justify-between p-2 bg-blue-50 rounded-lg border border-blue-200">
-                <div className="text-sm text-blue-800">Create Age_x_Contract interaction</div>
-                <div className="flex gap-1">
-                  <Button size="sm" variant="outline" className="h-6 w-6 p-0">
-                    <Check className="w-3 h-3" />
-                  </Button>
-                  <Button size="sm" variant="outline" className="h-6 w-6 p-0">
-                    <X className="w-3 h-3" />
-                  </Button>
-                </div>
-              </div>
-              <div className="flex items-center justify-between p-2 bg-blue-50 rounded-lg border border-blue-200">
-                <div className="text-sm text-blue-800">Apply log transform to PDF_Pages</div>
-                <div className="flex gap-1">
-                  <Button size="sm" variant="outline" className="h-6 w-6 p-0">
-                    <Check className="w-3 h-3" />
-                  </Button>
-                  <Button size="sm" variant="outline" className="h-6 w-6 p-0">
-                    <X className="w-3 h-3" />
-                  </Button>
-                </div>
-              </div>
+
+            <div className="grid grid-cols-2 gap-2 pt-2">
+              <Button size="sm" variant="outline" className="text-xs">
+                <Zap className="w-3 h-3 mr-1" />
+                Auto-Generate
+              </Button>
+              <Button size="sm" variant="outline" className="text-xs">
+                <Download className="w-3 h-3 mr-1" />
+                Export Features
+              </Button>
             </div>
           </TabsContent>
 
-          <TabsContent value="transformation" className="flex-1 space-y-3">
-            <div className="max-h-40 overflow-y-auto">
+          <TabsContent value="transformation" className="flex-1 space-y-2">
+            <div className="max-h-32 overflow-y-auto">
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead className="text-xs p-2">Feature</TableHead>
+                    <TableHead className="text-xs p-2">Original</TableHead>
                     <TableHead className="text-xs p-2">Transform</TableHead>
                     <TableHead className="text-xs p-2">Origin</TableHead>
                     <TableHead className="text-xs p-2">Status</TableHead>
@@ -133,37 +137,24 @@ const FeatureEngineeringPanel = () => {
                 <TableBody>
                   {transformationMap.map((item, index) => (
                     <TableRow key={index}>
+                      <TableCell className="text-xs p-2 font-medium">{item.originalFeature}</TableCell>
                       <TableCell className="text-xs p-2">
                         <div className="flex items-center gap-1">
-                          <span className="font-medium">{item.original}</span>
                           <ArrowRight className="w-3 h-3 text-slate-400" />
-                          <span className="text-slate-600">{item.feature}</span>
+                          <span>{item.transformation}</span>
                         </div>
                       </TableCell>
                       <TableCell className="text-xs p-2">
-                        <div className="text-slate-700">{item.transformation}</div>
-                        <div className="text-slate-500 text-xs">{item.method}</div>
-                      </TableCell>
-                      <TableCell className="text-xs p-2">
-                        <div className="flex items-center gap-1">
-                          {item.origin === 'manual' ? (
-                            <User className="w-3 h-3 text-blue-600" />
+                        <Badge variant={item.origin === 'AI-Suggested' ? 'default' : 'secondary'} className="text-xs">
+                          {item.origin === 'AI-Suggested' ? (
+                            <><Sparkles className="w-3 h-3 mr-1" />AI</>
                           ) : (
-                            <Bot className="w-3 h-3 text-purple-600" />
+                            'Manual'
                           )}
-                          <span className={item.origin === 'manual' ? 'text-blue-600' : 'text-purple-600'}>
-                            {item.origin === 'manual' ? 'Manual' : 'AI'}
-                          </span>
-                        </div>
+                        </Badge>
                       </TableCell>
                       <TableCell className="text-xs p-2">
-                        <Badge 
-                          variant={
-                            item.status === 'active' ? 'default' :
-                            item.status === 'pending' ? 'secondary' : 'destructive'
-                          }
-                          className="text-xs"
-                        >
+                        <Badge variant={item.status === 'applied' ? 'default' : 'secondary'} className="text-xs">
                           {item.status}
                         </Badge>
                       </TableCell>
@@ -172,13 +163,79 @@ const FeatureEngineeringPanel = () => {
                 </TableBody>
               </Table>
             </div>
+
+            <div className="bg-purple-50 p-2 rounded-lg border border-purple-200">
+              <div className="text-xs font-medium text-purple-700">Summary</div>
+              <div className="text-xs text-purple-800">4 transformations applied • 3 AI-suggested • 1 manual</div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-2">
+              <Button size="sm" variant="outline" className="text-xs">
+                <Zap className="w-3 h-3 mr-1" />
+                Auto-Generate
+              </Button>
+              <Button size="sm" variant="outline" className="text-xs">
+                <Download className="w-3 h-3 mr-1" />
+                Export Map
+              </Button>
+            </div>
+          </TabsContent>
+          
+          <TabsContent value="logs" className="flex-1 space-y-2">
+            <div className="space-y-2 max-h-32 overflow-y-auto">
+              {logs.map((log, index) => (
+                <div key={index} className="flex items-start gap-2 p-2 bg-slate-50 rounded-lg border">
+                  <div className={`w-2 h-2 rounded-full mt-2 flex-shrink-0 ${
+                    log.status === 'success' ? 'bg-green-500' : 'bg-blue-500 animate-pulse'
+                  }`}></div>
+                  <div className="flex-1 min-w-0">
+                    <div className="text-xs text-slate-400">{log.time}</div>
+                    <div className="text-sm text-slate-700">{log.action}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="grid grid-cols-2 gap-2 pt-2">
+              <Button size="sm" variant="outline" className="text-xs">
+                <Zap className="w-3 h-3 mr-1" />
+                Auto-Generate
+              </Button>
+              <Button size="sm" variant="outline" className="text-xs">
+                <Download className="w-3 h-3 mr-1" />
+                Export Logs
+              </Button>
+            </div>
+          </TabsContent>
+          
+          <TabsContent value="suggestions" className="flex-1 space-y-2">
+            <div className="space-y-2 max-h-32 overflow-y-auto">
+              {aiSuggestions.map((suggestion, index) => (
+                <div key={index} className="p-2 bg-slate-50 rounded-lg border">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-sm font-medium text-slate-900">{suggestion.feature}</span>
+                    <Badge variant="outline" className="text-xs">
+                      {Math.round(suggestion.confidence * 100)}% conf
+                    </Badge>
+                  </div>
+                  <div className="text-sm text-slate-700">{suggestion.suggestion}</div>
+                  <div className="text-xs text-slate-500">{suggestion.reason}</div>
+                </div>
+              ))}
+            </div>
+
+            <div className="grid grid-cols-2 gap-2 pt-2">
+              <Button size="sm" variant="outline" className="text-xs">
+                <CheckCircle className="w-3 h-3 mr-1" />
+                Apply All
+              </Button>
+              <Button size="sm" variant="outline" className="text-xs">
+                <AlertCircle className="w-3 h-3 mr-1" />
+                Review
+              </Button>
+            </div>
           </TabsContent>
         </Tabs>
-
-        <Button size="sm" variant="outline" className="w-full mt-4 text-xs">
-          <Settings className="w-3 h-3 mr-2" />
-          Configure Auto-Engineering
-        </Button>
       </CardContent>
     </Card>
   );

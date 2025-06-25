@@ -25,7 +25,7 @@ const PipelineOrchestrationPanel = () => {
 
   return (
     <Card className="h-full flex flex-col border-2 border-orange-200 shadow-lg">
-      <CardHeader className="pb-4 flex-shrink-0">
+      <CardHeader className="pb-3 flex-shrink-0">
         <div className="flex items-center justify-between">
           <CardTitle className="flex items-center gap-2 text-orange-700 text-lg">
             <GitBranch className="w-5 h-5" />
@@ -39,15 +39,15 @@ const PipelineOrchestrationPanel = () => {
       
       <CardContent className="flex-1 overflow-hidden">
         <Tabs defaultValue="flow" className="h-full flex flex-col">
-          <TabsList className="grid w-full grid-cols-3 mb-4">
+          <TabsList className="grid w-full grid-cols-3 mb-3">
             <TabsTrigger value="flow" className="text-xs">Flow</TabsTrigger>
             <TabsTrigger value="logs" className="text-xs">Logs</TabsTrigger>
             <TabsTrigger value="metrics" className="text-xs">Metrics</TabsTrigger>
           </TabsList>
           
-          <TabsContent value="flow" className="flex-1 space-y-3">
-            <div className="space-y-2">
-              {pipelineSteps.map((step) => (
+          <TabsContent value="flow" className="flex-1 space-y-2">
+            <div className="space-y-1">
+              {pipelineSteps.slice(0, 3).map((step) => (
                 <div key={step.id} className="flex items-center gap-3 p-2 bg-slate-50 rounded-lg border">
                   <div className={`w-3 h-3 rounded-full flex-shrink-0 ${
                     step.status === 'completed' ? 'bg-green-500' :
@@ -75,10 +75,25 @@ const PipelineOrchestrationPanel = () => {
                 Stage 4 failed: Schema drift detected in audio ingestion
               </AlertDescription>
             </Alert>
+
+            <div className="grid grid-cols-3 gap-2 pt-2">
+              <Button size="sm" variant="outline" className="text-xs">
+                <Play className="w-3 h-3 mr-1" />
+                Retry
+              </Button>
+              <Button size="sm" variant="outline" className="text-xs">
+                <Pause className="w-3 h-3 mr-1" />
+                Pause
+              </Button>
+              <Button size="sm" variant="outline" className="text-xs">
+                <Eye className="w-3 h-3 mr-1" />
+                Debug
+              </Button>
+            </div>
           </TabsContent>
           
           <TabsContent value="logs" className="flex-1 space-y-2">
-            <div className="space-y-2 max-h-40 overflow-y-auto">
+            <div className="space-y-2 max-h-28 overflow-y-auto">
               {jobLogs.map((log, index) => (
                 <div key={index} className="flex items-start gap-2 p-2 bg-slate-50 rounded-lg border">
                   <div className={`w-2 h-2 rounded-full mt-2 flex-shrink-0 ${
@@ -95,9 +110,24 @@ const PipelineOrchestrationPanel = () => {
                 </div>
               ))}
             </div>
+
+            <div className="grid grid-cols-3 gap-2 pt-2">
+              <Button size="sm" variant="outline" className="text-xs">
+                <Play className="w-3 h-3 mr-1" />
+                Retry
+              </Button>
+              <Button size="sm" variant="outline" className="text-xs">
+                <Pause className="w-3 h-3 mr-1" />
+                Pause
+              </Button>
+              <Button size="sm" variant="outline" className="text-xs">
+                <Eye className="w-3 h-3 mr-1" />
+                Debug
+              </Button>
+            </div>
           </TabsContent>
           
-          <TabsContent value="metrics" className="flex-1 space-y-3">
+          <TabsContent value="metrics" className="flex-1 space-y-2">
             <div className="grid grid-cols-2 gap-3">
               <div className="bg-blue-50 p-3 rounded-lg border border-blue-200">
                 <div className="text-sm font-medium text-blue-700">Avg Runtime</div>
@@ -108,23 +138,23 @@ const PipelineOrchestrationPanel = () => {
                 <div className="text-lg font-bold text-green-800">92%</div>
               </div>
             </div>
+
+            <div className="grid grid-cols-3 gap-2 pt-2">
+              <Button size="sm" variant="outline" className="text-xs">
+                <Play className="w-3 h-3 mr-1" />
+                Retry
+              </Button>
+              <Button size="sm" variant="outline" className="text-xs">
+                <Pause className="w-3 h-3 mr-1" />
+                Pause
+              </Button>
+              <Button size="sm" variant="outline" className="text-xs">
+                <Eye className="w-3 h-3 mr-1" />
+                Debug
+              </Button>
+            </div>
           </TabsContent>
         </Tabs>
-
-        <div className="grid grid-cols-3 gap-2 mt-4">
-          <Button size="sm" variant="outline" className="text-xs">
-            <Play className="w-3 h-3 mr-1" />
-            Retry
-          </Button>
-          <Button size="sm" variant="outline" className="text-xs">
-            <Pause className="w-3 h-3 mr-1" />
-            Pause
-          </Button>
-          <Button size="sm" variant="outline" className="text-xs">
-            <Eye className="w-3 h-3 mr-1" />
-            Debug
-          </Button>
-        </div>
       </CardContent>
     </Card>
   );
