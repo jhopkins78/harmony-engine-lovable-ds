@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -11,16 +10,16 @@ import { MessageSquare, Hash, User, FileText } from 'lucide-react';
 const NLPConsole = () => {
   const [selectedTask, setSelectedTask] = useState('Topic Modeling');
 
-  // Mock data for NLP analysis
+  // Mock data for NLP analysis with colors mapped
   const embeddingData = [
-    { x: -2.1, y: 1.5, cluster: 'Complaints', label: 'Doc1' },
-    { x: -1.8, y: 1.2, cluster: 'Complaints', label: 'Doc2' },
-    { x: 0.5, y: -0.8, cluster: 'Reviews', label: 'Doc3' },
-    { x: 0.3, y: -1.2, cluster: 'Reviews', label: 'Doc4' },
-    { x: 2.1, y: 0.5, cluster: 'Support', label: 'Doc5' },
-    { x: 1.9, y: 0.8, cluster: 'Support', label: 'Doc6' },
-    { x: -0.2, y: 2.1, cluster: 'Feedback', label: 'Doc7' },
-    { x: 0.1, y: 1.8, cluster: 'Feedback', label: 'Doc8' },
+    { x: -2.1, y: 1.5, cluster: 'Complaints', label: 'Doc1', fill: '#ef4444' },
+    { x: -1.8, y: 1.2, cluster: 'Complaints', label: 'Doc2', fill: '#ef4444' },
+    { x: 0.5, y: -0.8, cluster: 'Reviews', label: 'Doc3', fill: '#3b82f6' },
+    { x: 0.3, y: -1.2, cluster: 'Reviews', label: 'Doc4', fill: '#3b82f6' },
+    { x: 2.1, y: 0.5, cluster: 'Support', label: 'Doc5', fill: '#22c55e' },
+    { x: 1.9, y: 0.8, cluster: 'Support', label: 'Doc6', fill: '#22c55e' },
+    { x: -0.2, y: 2.1, cluster: 'Feedback', label: 'Doc7', fill: '#f59e0b' },
+    { x: 0.1, y: 1.8, cluster: 'Feedback', label: 'Doc8', fill: '#f59e0b' },
   ];
 
   const topics = [
@@ -103,18 +102,7 @@ const NLPConsole = () => {
                       <XAxis dataKey="x" className="text-xs" />
                       <YAxis dataKey="y" className="text-xs" />
                       <ChartTooltip content={<ChartTooltipContent />} />
-                      <Scatter
-                        dataKey="y"
-                        fill={(entry) => {
-                          const colors = {
-                            'Complaints': '#ef4444',
-                            'Reviews': '#3b82f6',
-                            'Support': '#22c55e',
-                            'Feedback': '#f59e0b'
-                          };
-                          return colors[entry.cluster] || '#64748b';
-                        }}
-                      />
+                      <Scatter dataKey="y" fill="#3b82f6" />
                     </ScatterChart>
                   </ResponsiveContainer>
                 </ChartContainer>
