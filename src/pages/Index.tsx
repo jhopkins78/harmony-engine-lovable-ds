@@ -13,6 +13,11 @@ import ModelExplainabilityPanel from '@/components/dashboard/ModelExplainability
 import MemoryGraphPanel from '@/components/dashboard/MemoryGraphPanel';
 import StructuredDataUploadConsole from '@/components/dashboard/StructuredDataUploadConsole';
 import UnstructuredDataUploadConsole from '@/components/dashboard/UnstructuredDataUploadConsole';
+import TimeSeriesConsole from '@/components/dashboard/TimeSeriesConsole';
+import BayesianConsole from '@/components/dashboard/BayesianConsole';
+import CausalInferenceConsole from '@/components/dashboard/CausalInferenceConsole';
+import AnomalyDetectionConsole from '@/components/dashboard/AnomalyDetectionConsole';
+import NLPConsole from '@/components/dashboard/NLPConsole';
 import { Button } from '@/components/ui/button';
 import { FileText, Database, Code, BarChart3, ChevronDown, ChevronUp } from 'lucide-react';
 
@@ -66,7 +71,7 @@ const Dashboard = () => {
         )}
 
         {/* Main Dashboard Grid - 3 columns, 2 rows */}
-        <div className="grid grid-cols-3 grid-rows-2 gap-6 h-[calc(100vh-240px)] mb-6">
+        <div className="grid grid-cols-3 grid-rows-2 gap-6 h-[calc(100vh-280px)] mb-6">
           {/* Top Row - 60% height */}
           <div className="row-span-1 h-full">
             <DataIngestionPanel />
@@ -93,6 +98,28 @@ const Dashboard = () => {
               <div className="h-full">
                 <MemoryGraphPanel />
               </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Advanced Analytics Consoles - Horizontal Scrollable */}
+        <div className="mb-6">
+          <h3 className="text-lg font-semibold mb-4 text-slate-700">Advanced Analytics Consoles</h3>
+          <div className="flex gap-6 overflow-x-auto pb-4 scrollbar-thin scrollbar-thumb-slate-300">
+            <div className="flex-shrink-0 w-80">
+              <TimeSeriesConsole />
+            </div>
+            <div className="flex-shrink-0 w-80">
+              <BayesianConsole />
+            </div>
+            <div className="flex-shrink-0 w-80">
+              <CausalInferenceConsole />
+            </div>
+            <div className="flex-shrink-0 w-80">
+              <AnomalyDetectionConsole />
+            </div>
+            <div className="flex-shrink-0 w-80">
+              <NLPConsole />
             </div>
           </div>
         </div>
