@@ -11,12 +11,15 @@ import FeatureEngineeringPanel from '@/components/dashboard/FeatureEngineeringPa
 import PipelineOrchestrationPanel from '@/components/dashboard/PipelineOrchestrationPanel';
 import ModelExplainabilityPanel from '@/components/dashboard/ModelExplainabilityPanel';
 import MemoryGraphPanel from '@/components/dashboard/MemoryGraphPanel';
+import StructuredDataUploadConsole from '@/components/dashboard/StructuredDataUploadConsole';
+import UnstructuredDataUploadConsole from '@/components/dashboard/UnstructuredDataUploadConsole';
 import { Button } from '@/components/ui/button';
-import { FileText, Database, Code, BarChart3 } from 'lucide-react';
+import { FileText, Database, Code, BarChart3, ChevronDown, ChevronUp } from 'lucide-react';
 
 const Dashboard = () => {
   const [isRealTime, setIsRealTime] = useState(true);
   const [lastUpdate, setLastUpdate] = useState(new Date());
+  const [showUploadPanel, setShowUploadPanel] = useState(false);
 
   // Simulate real-time updates
   useEffect(() => {
@@ -40,6 +43,27 @@ const Dashboard = () => {
           lastUpdate={lastUpdate}
           onToggleRealTime={handleToggleRealTime}
         />
+
+        {/* Data Upload Panel Toggle */}
+        <div className="mb-4">
+          <Button
+            variant="outline"
+            onClick={() => setShowUploadPanel(!showUploadPanel)}
+            className="flex items-center gap-2"
+          >
+            <Database className="w-4 h-4" />
+            Data Upload Consoles
+            {showUploadPanel ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+          </Button>
+        </div>
+
+        {/* Data Upload Consoles */}
+        {showUploadPanel && (
+          <div className="grid grid-cols-2 gap-6 mb-6">
+            <StructuredDataUploadConsole />
+            <UnstructuredDataUploadConsole />
+          </div>
+        )}
 
         {/* Main Dashboard Grid - 3 columns, 2 rows */}
         <div className="grid grid-cols-3 grid-rows-2 gap-6 h-[calc(100vh-240px)] mb-6">
