@@ -1,13 +1,16 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { Brain, HelpCircle, Eye } from 'lucide-react';
+import { Brain, HelpCircle, Eye, Download, Edit2 } from 'lucide-react';
 
 const ModelExplainabilityPanel = () => {
+  const [selectedInstance, setSelectedInstance] = useState('ID_1247');
+  
   const shapData = [
     { feature: 'Age', shap_value: 0.15, contribution: 'positive' },
     { feature: 'Income', shap_value: 0.12, contribution: 'positive' },
@@ -20,6 +23,41 @@ const ModelExplainabilityPanel = () => {
     { id: 'ID_1247', prediction: 'High Risk', confidence: 0.87, key_driver: 'Low income + Short contract' },
     { id: 'ID_8932', prediction: 'Low Risk', confidence: 0.94, key_driver: 'High income + Positive sentiment' },
     { id: 'ID_5621', prediction: 'Medium Risk', confidence: 0.72, key_driver: 'Mixed signals in audio' }
+  ];
+
+  const counterfactualData = [
+    {
+      feature: 'Age',
+      current: 28,
+      suggested: 31,
+      change: '+3 years',
+      impact: 'Moderate positive',
+      required: true
+    },
+    {
+      feature: 'Income',
+      current: 45000,
+      suggested: 49000,
+      change: '+$4,000',
+      impact: 'High positive',
+      required: true
+    },
+    {
+      feature: 'Contract_Length',
+      current: 6,
+      suggested: 12,
+      change: '+6 months',
+      impact: 'Low positive',
+      required: false
+    },
+    {
+      feature: 'Email_Sentiment',
+      current: 0.2,
+      suggested: 0.6,
+      change: '+0.4 score',
+      impact: 'Medium positive',
+      required: false
+    }
   ];
 
   return (
@@ -38,10 +76,11 @@ const ModelExplainabilityPanel = () => {
       
       <CardContent className="flex-1 overflow-hidden">
         <Tabs defaultValue="shap" className="h-full flex flex-col">
-          <TabsList className="grid w-full grid-cols-3 mb-4">
+          <TabsList className="grid w-full grid-cols-4 mb-4">
             <TabsTrigger value="shap" className="text-xs">SHAP</TabsTrigger>
             <TabsTrigger value="instances" className="text-xs">Instances</TabsTrigger>
             <TabsTrigger value="lime" className="text-xs">LIME</TabsTrigger>
+            <TabsTrigger value="counterfactual" className="text-xs">Counterfactual</TabsTrigger>
           </TabsList>
           
           <TabsContent value="shap" className="flex-1 space-y-3">
@@ -107,6 +146,52 @@ const ModelExplainabilityPanel = () => {
               </div>
             </div>
           </TabsContent>
+
+          <TabsContent value="counterfactual" className="flex-1 space-y-3">
+            <div className="bg-indigo-50 p-3 rounded-lg border border-indigo-200">
+              <div className="text-sm font-medium text-indigo-700">Counterfactual Analysis for {selectedInstance}</div>
+              <div className="text-sm text-indigo-800">
+                Current: <Badge variant="destructive" className="text-xs">High Risk</Badge> → 
+                Target: <Badge variant="default" className="text-xs ml-1">Low Risk</Badge>
+              </div>
+            </div>
+
+            <div className="max-h-32 overflow-y-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="text-xs p-2">Feature</TableHead>
+                    <TableHead className="text-xs p-2">Current</TableHead>
+                    <TableHead className="text-xs p-2">Change</TableHead>
+                    <TableHead className="text-xs p-2">Required</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {counterfactualData.map((item, index) => (
+                    <TableRow key={index}>
+                      <TableCell className="text-xs p-2 font-medium">{item.feature}</TableCell>
+                      <TableCell className="text-xs p-2">{item.current}</TableCell>
+                      <TableCell className="text-xs p-2">
+                        <span className={item.required ? 'text-red-600 font-medium' : 'text-slate-600'}>
+                          {item.change}
+                        </span>
+                      </TableCell>
+                      <TableCell className="text-xs p-2">
+                        <Badge variant={item.required ? 'destructive' : 'secondary'} className="text-xs">
+                          {item.required ? 'Yes' : 'No'}
+                        </Badge>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+
+            <div className="text-xs text-slate-600 bg-slate-50 p-2 rounded border">
+              <strong>Summary:</strong> To change prediction from "High Risk" to "Low Risk", 
+              increase Age by 3 years and Income by $4,000 (minimum required changes).
+            </div>
+          </TabsContent>
         </Tabs>
 
         <div className="grid grid-cols-2 gap-2 mt-4">
@@ -115,8 +200,8 @@ const ModelExplainabilityPanel = () => {
             ICE Plots
           </Button>
           <Button size="sm" variant="outline" className="text-xs">
-            <HelpCircle className="w-3 h-3 mr-1" />
-            Explain
+            <Download className="w-3 h-3 mr-1" />
+            Export Report
           </Button>
         </div>
       </CardContent>

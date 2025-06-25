@@ -4,8 +4,9 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { Zap, Check, X, Settings } from 'lucide-react';
+import { Zap, Check, X, Settings, Bot, User, ArrowRight } from 'lucide-react';
 
 const FeatureEngineeringPanel = () => {
   const featureImportanceData = [
@@ -21,6 +22,15 @@ const FeatureEngineeringPanel = () => {
     { time: '14:20', action: 'Created Age_x_Income interaction term', status: 'success' },
     { time: '14:18', action: 'Binned Contract_Duration into 5 groups', status: 'pending' },
     { time: '14:15', action: 'Generated cross-feature for Audio_Sentiment', status: 'success' }
+  ];
+
+  const transformationMap = [
+    { feature: 'Age', original: 'Age', transformation: 'Min-Max Scaling', method: 'range(0,1)', origin: 'manual', status: 'active' },
+    { feature: 'Income', original: 'Income', transformation: 'Log Transform', method: 'log(x+1)', origin: 'AI-suggested', status: 'active' },
+    { feature: 'Email_Length', original: 'Email_Length', transformation: 'Polynomial', method: 'x^2, x^3', origin: 'AI-suggested', status: 'active' },
+    { feature: 'Contract_Duration', original: 'Contract_Duration', transformation: 'Binning', method: '5 bins', origin: 'manual', status: 'pending' },
+    { feature: 'Audio_Quality', original: 'Audio_Quality', transformation: 'Standard Scaling', method: 'z-score', origin: 'manual', status: 'active' },
+    { feature: 'PDF_Pages', original: 'PDF_Pages', transformation: 'Log Transform', method: 'log(x)', origin: 'AI-suggested', status: 'rejected' }
   ];
 
   return (
@@ -39,10 +49,11 @@ const FeatureEngineeringPanel = () => {
       
       <CardContent className="flex-1 overflow-hidden">
         <Tabs defaultValue="importance" className="h-full flex flex-col">
-          <TabsList className="grid w-full grid-cols-3 mb-4">
+          <TabsList className="grid w-full grid-cols-4 mb-4">
             <TabsTrigger value="importance" className="text-xs">Importance</TabsTrigger>
             <TabsTrigger value="logs" className="text-xs">Logs</TabsTrigger>
             <TabsTrigger value="suggestions" className="text-xs">AI Suggestions</TabsTrigger>
+            <TabsTrigger value="transformation" className="text-xs">Transform Map</TabsTrigger>
           </TabsList>
           
           <TabsContent value="importance" className="flex-1 space-y-3">
@@ -105,6 +116,61 @@ const FeatureEngineeringPanel = () => {
                   </Button>
                 </div>
               </div>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="transformation" className="flex-1 space-y-3">
+            <div className="max-h-40 overflow-y-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="text-xs p-2">Feature</TableHead>
+                    <TableHead className="text-xs p-2">Transform</TableHead>
+                    <TableHead className="text-xs p-2">Origin</TableHead>
+                    <TableHead className="text-xs p-2">Status</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {transformationMap.map((item, index) => (
+                    <TableRow key={index}>
+                      <TableCell className="text-xs p-2">
+                        <div className="flex items-center gap-1">
+                          <span className="font-medium">{item.original}</span>
+                          <ArrowRight className="w-3 h-3 text-slate-400" />
+                          <span className="text-slate-600">{item.feature}</span>
+                        </div>
+                      </TableCell>
+                      <TableCell className="text-xs p-2">
+                        <div className="text-slate-700">{item.transformation}</div>
+                        <div className="text-slate-500 text-xs">{item.method}</div>
+                      </TableCell>
+                      <TableCell className="text-xs p-2">
+                        <div className="flex items-center gap-1">
+                          {item.origin === 'manual' ? (
+                            <User className="w-3 h-3 text-blue-600" />
+                          ) : (
+                            <Bot className="w-3 h-3 text-purple-600" />
+                          )}
+                          <span className={item.origin === 'manual' ? 'text-blue-600' : 'text-purple-600'}>
+                            {item.origin === 'manual' ? 'Manual' : 'AI'}
+                          </span>
+                        </div>
+                      </TableCell>
+                      <TableCell className="text-xs p-2">
+                        <Badge 
+                          variant={
+                            item.status === 'active' ? 'default' :
+                            item.status === 'pending' ? 'secondary' : 'destructive'
+                          }
+                          className="text-xs"
+                        >
+                          {item.status}
+                        </Badge>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
             </div>
           </TabsContent>
         </Tabs>
