@@ -7,6 +7,10 @@ import ModelPerformancePanel from '@/components/dashboard/ModelPerformancePanel'
 import BiasDetectionPanel from '@/components/dashboard/BiasDetectionPanel';
 import CollaborationPanel from '@/components/dashboard/CollaborationPanel';
 import ExperimentationPanel from '@/components/dashboard/ExperimentationPanel';
+import FeatureEngineeringPanel from '@/components/dashboard/FeatureEngineeringPanel';
+import PipelineOrchestrationPanel from '@/components/dashboard/PipelineOrchestrationPanel';
+import ModelExplainabilityPanel from '@/components/dashboard/ModelExplainabilityPanel';
+import MemoryGraphPanel from '@/components/dashboard/MemoryGraphPanel';
 import { Button } from '@/components/ui/button';
 import { FileText, Database, Code, BarChart3 } from 'lucide-react';
 
@@ -50,15 +54,22 @@ const Dashboard = () => {
             <ModelPerformancePanel />
           </div>
 
-          {/* Bottom Row - 40% height */}
-          <div className="row-span-1 h-full">
-            <CollaborationPanel />
-          </div>
-          <div className="row-span-1 h-full">
-            <ExperimentationPanel />
-          </div>
-          <div className="row-span-1 h-full">
-            <BiasDetectionPanel />
+          {/* Bottom Row - 40% height, 4 columns */}
+          <div className="col-span-3 row-span-1 h-full">
+            <div className="grid grid-cols-4 gap-6 h-full">
+              <div className="h-full">
+                <FeatureEngineeringPanel />
+              </div>
+              <div className="h-full">
+                <PipelineOrchestrationPanel />
+              </div>
+              <div className="h-full">
+                <ModelExplainabilityPanel />
+              </div>
+              <div className="h-full">
+                <MemoryGraphPanel />
+              </div>
+            </div>
           </div>
         </div>
 
