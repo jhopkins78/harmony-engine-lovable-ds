@@ -41,7 +41,7 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 pb-20">
       <div className="container mx-auto px-6 py-6">
         <DashboardHeader 
           isRealTime={isRealTime}
@@ -70,65 +70,62 @@ const Dashboard = () => {
           </div>
         )}
 
-        {/* Main Dashboard Grid - 3 columns, 2 rows */}
-        <div className="grid grid-cols-3 grid-rows-2 gap-6 h-[calc(100vh-280px)] mb-6">
-          {/* Top Row - 60% height */}
-          <div className="row-span-1 h-full">
+        {/* Main Dashboard Grid - Fixed height container */}
+        <div className="grid grid-cols-3 grid-rows-2 gap-6 h-[500px] mb-8">
+          {/* Top Row */}
+          <div className="row-span-1">
             <DataIngestionPanel />
           </div>
-          <div className="row-span-1 h-full">
+          <div className="row-span-1">
             <DataTransformationPanel />
           </div>
-          <div className="row-span-1 h-full">
+          <div className="row-span-1">
             <ModelPerformancePanel />
           </div>
 
-          {/* Bottom Row - 40% height, 4 columns */}
-          <div className="col-span-3 row-span-1 h-full">
+          {/* Bottom Row - 4 columns */}
+          <div className="col-span-3 row-span-1">
             <div className="grid grid-cols-4 gap-6 h-full">
-              <div className="h-full">
+              <div>
                 <FeatureEngineeringPanel />
               </div>
-              <div className="h-full">
+              <div>
                 <PipelineOrchestrationPanel />
               </div>
-              <div className="h-full">
+              <div>
                 <ModelExplainabilityPanel />
               </div>
-              <div className="h-full">
+              <div>
                 <MemoryGraphPanel />
               </div>
             </div>
           </div>
         </div>
 
-        {/* Advanced Analytics Consoles - Horizontal Scrollable */}
-        <div className="mb-6">
+        {/* Advanced Analytics Consoles - Fixed height horizontal scrollable */}
+        <div className="mt-8">
           <h3 className="text-lg font-semibold mb-4 text-slate-700">Advanced Analytics Consoles</h3>
-          <div className="flex gap-6 overflow-x-auto pb-4 scrollbar-thin scrollbar-thumb-slate-300">
-            <div className="flex-shrink-0 w-80">
+          <div className="flex gap-6 overflow-x-auto overflow-y-hidden h-96 pb-4 scroll-smooth snap-x snap-mandatory">
+            <div className="flex-shrink-0 w-80 snap-start">
               <TimeSeriesConsole />
             </div>
-            <div className="flex-shrink-0 w-80">
+            <div className="flex-shrink-0 w-80 snap-start">
               <BayesianConsole />
             </div>
-            <div className="flex-shrink-0 w-80">
+            <div className="flex-shrink-0 w-80 snap-start">
               <CausalInferenceConsole />
             </div>
-            <div className="flex-shrink-0 w-80">
+            <div className="flex-shrink-0 w-80 snap-start">
               <AnomalyDetectionConsole />
             </div>
-            <div className="flex-shrink-0 w-80">
+            <div className="flex-shrink-0 w-80 snap-start">
               <NLPConsole />
             </div>
           </div>
         </div>
 
-        {/* Additional spacing below the main grid to allow scrolling */}
-        <div className="h-32 mb-20"></div>
-
         {/* Footer Toolbar */}
-        <div className="fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-sm border-t border-slate-200 px-6 py-3">
+        <div className="fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-sm border-t border-slate-200 px-6 py-3 z-10">
           <div className="container mx-auto flex justify-center gap-4">
             <Button variant="outline" size="sm" className="flex items-center gap-2">
               <FileText className="w-4 h-4" />
