@@ -103,23 +103,25 @@ const Dashboard = () => {
         </div>
 
         {/* Advanced Analytics Consoles - Fixed height horizontal scrollable */}
-        <div className="mt-8">
-          <h3 className="text-lg font-semibold mb-4 text-slate-700">Advanced Analytics Consoles</h3>
-          <div className="flex gap-6 overflow-x-auto overflow-y-hidden h-96 pb-4 scroll-smooth snap-x snap-mandatory">
-            <div className="flex-shrink-0 w-80 snap-start">
-              <TimeSeriesConsole />
-            </div>
-            <div className="flex-shrink-0 w-80 snap-start">
-              <BayesianConsole />
-            </div>
-            <div className="flex-shrink-0 w-80 snap-start">
-              <CausalInferenceConsole />
-            </div>
-            <div className="flex-shrink-0 w-80 snap-start">
-              <AnomalyDetectionConsole />
-            </div>
-            <div className="flex-shrink-0 w-80 snap-start">
-              <NLPConsole />
+        <div className="mt-16">
+          <h3 className="text-lg font-semibold mb-6 text-slate-700">Advanced Analytics Consoles</h3>
+          <div className="w-full overflow-x-auto pb-4">
+            <div className="flex gap-6 items-start min-h-[480px] scroll-smooth snap-x snap-mandatory">
+              <div className="flex-shrink-0 w-80 snap-start">
+                <TimeSeriesConsole />
+              </div>
+              <div className="flex-shrink-0 w-80 snap-start">
+                <BayesianConsole />
+              </div>
+              <div className="flex-shrink-0 w-80 snap-start">
+                <CausalInferenceConsole />
+              </div>
+              <div className="flex-shrink-0 w-80 snap-start">
+                <AnomalyDetectionConsole />
+              </div>
+              <div className="flex-shrink-0 w-80 snap-start">
+                <NLPConsole />
+              </div>
             </div>
           </div>
         </div>
