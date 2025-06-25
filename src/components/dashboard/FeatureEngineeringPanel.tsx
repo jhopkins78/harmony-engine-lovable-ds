@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -82,14 +81,35 @@ const FeatureEngineeringPanel = () => {
       
       <CardContent className="flex-1 overflow-hidden">
         <Tabs defaultValue="importance" className="h-full flex flex-col">
-          <TabsList className="grid w-full grid-cols-4 mb-3">
-            <TabsTrigger value="importance" className="text-xs">Importance</TabsTrigger>
-            <TabsTrigger value="transformation" className="text-xs">Transform Map</TabsTrigger>
-            <TabsTrigger value="logs" className="text-xs">Logs</TabsTrigger>
-            <TabsTrigger value="suggestions" className="text-xs">AI Suggestions</TabsTrigger>
-          </TabsList>
+          <div className="flex flex-col gap-3 mb-3">
+            <TabsList className="flex flex-row w-full h-auto p-1 gap-1 overflow-x-auto">
+              <TabsTrigger value="importance" className="flex-shrink-0 text-xs px-2 py-1 whitespace-nowrap">
+                Importance
+              </TabsTrigger>
+              <TabsTrigger value="transformation" className="flex-shrink-0 text-xs px-2 py-1 whitespace-nowrap">
+                Transform Map
+              </TabsTrigger>
+              <TabsTrigger value="logs" className="flex-shrink-0 text-xs px-2 py-1 whitespace-nowrap">
+                Logs
+              </TabsTrigger>
+              <TabsTrigger value="suggestions" className="flex-shrink-0 text-xs px-2 py-1 whitespace-nowrap">
+                AI Suggestions
+              </TabsTrigger>
+            </TabsList>
+            
+            <div className="grid grid-cols-2 gap-2">
+              <Button size="sm" variant="outline" className="text-xs">
+                <Zap className="w-3 h-3 mr-1" />
+                Auto-Generate
+              </Button>
+              <Button size="sm" variant="outline" className="text-xs">
+                <Download className="w-3 h-3 mr-1" />
+                Export Logs
+              </Button>
+            </div>
+          </div>
           
-          <TabsContent value="importance" className="flex-1 space-y-2">
+          <TabsContent value="importance" className="flex-1 space-y-2 mt-0">
             <div className="space-y-1 max-h-32 overflow-y-auto">
               {features.map((feature, index) => (
                 <div key={index} className="flex items-center gap-3 p-2 bg-slate-50 rounded-lg border">
@@ -110,20 +130,9 @@ const FeatureEngineeringPanel = () => {
                 </div>
               ))}
             </div>
-
-            <div className="grid grid-cols-2 gap-2 pt-2">
-              <Button size="sm" variant="outline" className="text-xs">
-                <Zap className="w-3 h-3 mr-1" />
-                Auto-Generate
-              </Button>
-              <Button size="sm" variant="outline" className="text-xs">
-                <Download className="w-3 h-3 mr-1" />
-                Export Features
-              </Button>
-            </div>
           </TabsContent>
 
-          <TabsContent value="transformation" className="flex-1 space-y-2">
+          <TabsContent value="transformation" className="flex-1 space-y-2 mt-0">
             <div className="max-h-32 overflow-y-auto">
               <Table>
                 <TableHeader>
@@ -168,20 +177,9 @@ const FeatureEngineeringPanel = () => {
               <div className="text-xs font-medium text-purple-700">Summary</div>
               <div className="text-xs text-purple-800">4 transformations applied • 3 AI-suggested • 1 manual</div>
             </div>
-
-            <div className="grid grid-cols-2 gap-2">
-              <Button size="sm" variant="outline" className="text-xs">
-                <Zap className="w-3 h-3 mr-1" />
-                Auto-Generate
-              </Button>
-              <Button size="sm" variant="outline" className="text-xs">
-                <Download className="w-3 h-3 mr-1" />
-                Export Map
-              </Button>
-            </div>
           </TabsContent>
           
-          <TabsContent value="logs" className="flex-1 space-y-2">
+          <TabsContent value="logs" className="flex-1 space-y-2 mt-0">
             <div className="space-y-2 max-h-32 overflow-y-auto">
               {logs.map((log, index) => (
                 <div key={index} className="flex items-start gap-2 p-2 bg-slate-50 rounded-lg border">
@@ -195,20 +193,9 @@ const FeatureEngineeringPanel = () => {
                 </div>
               ))}
             </div>
-
-            <div className="grid grid-cols-2 gap-2 pt-2">
-              <Button size="sm" variant="outline" className="text-xs">
-                <Zap className="w-3 h-3 mr-1" />
-                Auto-Generate
-              </Button>
-              <Button size="sm" variant="outline" className="text-xs">
-                <Download className="w-3 h-3 mr-1" />
-                Export Logs
-              </Button>
-            </div>
           </TabsContent>
           
-          <TabsContent value="suggestions" className="flex-1 space-y-2">
+          <TabsContent value="suggestions" className="flex-1 space-y-2 mt-0">
             <div className="space-y-2 max-h-32 overflow-y-auto">
               {aiSuggestions.map((suggestion, index) => (
                 <div key={index} className="p-2 bg-slate-50 rounded-lg border">
