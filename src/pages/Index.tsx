@@ -97,6 +97,9 @@ const Dashboard = () => {
           </div>
         </div>
 
+        {/* Additional spacing below the main grid to allow scrolling */}
+        <div className="h-32 mb-20"></div>
+
         {/* Footer Toolbar */}
         <div className="fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-sm border-t border-slate-200 px-6 py-3">
           <div className="container mx-auto flex justify-center gap-4">

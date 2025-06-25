@@ -57,7 +57,7 @@ const ModelPerformancePanel = () => {
 
   return (
     <Card className="h-full flex flex-col border-2 border-green-200 shadow-lg">
-      <CardHeader className="pb-4 flex-shrink-0">
+      <CardHeader className="pb-3 flex-shrink-0">
         <div className="flex items-center justify-between">
           <CardTitle className="flex items-center gap-2 text-green-700 text-lg">
             <Brain className="w-5 h-5" />
@@ -71,14 +71,14 @@ const ModelPerformancePanel = () => {
       
       <CardContent className="flex-1 overflow-hidden">
         <Tabs defaultValue="performance" className="h-full flex flex-col">
-          <TabsList className="grid w-full grid-cols-3 mb-4">
+          <TabsList className="grid w-full grid-cols-3 mb-3">
             <TabsTrigger value="performance" className="text-sm">Performance</TabsTrigger>
             <TabsTrigger value="selection" className="text-sm">Selection</TabsTrigger>
             <TabsTrigger value="configuration" className="text-sm">Configuration</TabsTrigger>
           </TabsList>
           
           <TabsContent value="performance" className="flex-1 space-y-3">
-            <div className="h-32">
+            <div className="h-28">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={modelPerformanceData}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
@@ -91,15 +91,27 @@ const ModelPerformancePanel = () => {
               </ResponsiveContainer>
             </div>
             
-            <div className="grid grid-cols-2 gap-3">
-              <div className="bg-green-50 p-3 rounded-lg border border-green-200">
-                <div className="text-sm font-medium text-green-700">Best F1</div>
-                <div className="text-lg font-bold text-green-800">Neural Net: 0.94</div>
+            <div className="grid grid-cols-2 gap-2">
+              <div className="bg-green-50 p-2 rounded-lg border border-green-200">
+                <div className="text-xs font-medium text-green-700">Best F1</div>
+                <div className="text-sm font-bold text-green-800">Neural Net: 0.94</div>
               </div>
-              <div className="bg-blue-50 p-3 rounded-lg border border-blue-200">
-                <div className="text-sm font-medium text-blue-700">Best AUC</div>
-                <div className="text-lg font-bold text-blue-800">Neural Net: 0.96</div>
+              <div className="bg-blue-50 p-2 rounded-lg border border-blue-200">
+                <div className="text-xs font-medium text-blue-700">Best AUC</div>
+                <div className="text-sm font-bold text-blue-800">Neural Net: 0.96</div>
               </div>
+            </div>
+
+            {/* Move the action buttons higher up */}
+            <div className="grid grid-cols-2 gap-2 pt-2">
+              <Button size="sm" variant="outline" className="text-xs">
+                <Eye className="w-3 h-3 mr-1" />
+                SHAP
+              </Button>
+              <Button size="sm" variant="outline" className="text-xs">
+                <BarChart3 className="w-3 h-3 mr-1" />
+                Compare
+              </Button>
             </div>
           </TabsContent>
           
@@ -130,8 +142,8 @@ const ModelPerformancePanel = () => {
             </Alert>
           </TabsContent>
 
-          <TabsContent value="configuration" className="flex-1 space-y-4">
-            <div className="grid grid-cols-2 gap-4">
+          <TabsContent value="configuration" className="flex-1 space-y-3">
+            <div className="grid grid-cols-1 gap-3">
               {/* Model Selection Dropdown */}
               <div className="space-y-2">
                 <label className="text-sm font-medium text-slate-700">Select Model</label>
@@ -169,9 +181,9 @@ const ModelPerformancePanel = () => {
 
             {/* Model Details */}
             {selectedModelData && (
-              <div className="bg-blue-50 p-3 rounded-lg border border-blue-200">
-                <div className="text-sm font-medium text-blue-700 mb-2">Model Details</div>
-                <div className="space-y-1 text-sm">
+              <div className="bg-blue-50 p-2 rounded-lg border border-blue-200">
+                <div className="text-xs font-medium text-blue-700 mb-1">Model Details</div>
+                <div className="space-y-1 text-xs">
                   <div><span className="font-medium">Type:</span> {selectedModelData.type}</div>
                   <div><span className="font-medium">Advantages:</span> {selectedModelData.advantages}</div>
                   <div><span className="font-medium">Training Time:</span> {selectedModelData.trainTime}</div>
@@ -181,9 +193,9 @@ const ModelPerformancePanel = () => {
 
             {/* Tuning Details */}
             {selectedTuningData && (
-              <div className="bg-purple-50 p-3 rounded-lg border border-purple-200">
-                <div className="text-sm font-medium text-purple-700 mb-2">Tuning Strategy</div>
-                <div className="space-y-1 text-sm">
+              <div className="bg-purple-50 p-2 rounded-lg border border-purple-200">
+                <div className="text-xs font-medium text-purple-700 mb-1">Tuning Strategy</div>
+                <div className="space-y-1 text-xs">
                   <div><span className="font-medium">Method:</span> {selectedTuningData.description}</div>
                   <div><span className="font-medium">Parameters:</span> {selectedTuningData.params}</div>
                 </div>
@@ -191,37 +203,27 @@ const ModelPerformancePanel = () => {
             )}
 
             {/* Action Buttons */}
-            <div className="flex gap-2 pt-2">
+            <div className="flex gap-2">
               <Button 
                 size="sm" 
-                className="flex-1"
+                className="flex-1 text-xs"
                 disabled={!selectedModel || !selectedTuning}
               >
-                <Play className="w-3 h-3 mr-2" />
+                <Play className="w-3 h-3 mr-1" />
                 Run Training
               </Button>
               <Button 
                 size="sm" 
                 variant="outline"
                 onClick={handleReset}
+                className="text-xs"
               >
-                <RotateCcw className="w-3 h-3 mr-2" />
+                <RotateCcw className="w-3 h-3 mr-1" />
                 Reset
               </Button>
             </div>
           </TabsContent>
         </Tabs>
-
-        <div className="grid grid-cols-2 gap-2 mt-4">
-          <Button size="sm" variant="outline" className="text-sm">
-            <Eye className="w-3 h-3 mr-2" />
-            SHAP
-          </Button>
-          <Button size="sm" variant="outline" className="text-sm">
-            <BarChart3 className="w-3 h-3 mr-2" />
-            Compare
-          </Button>
-        </div>
       </CardContent>
     </Card>
   );
