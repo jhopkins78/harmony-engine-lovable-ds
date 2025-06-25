@@ -70,8 +70,8 @@ const Dashboard = () => {
           </div>
         )}
 
-        {/* Main Dashboard Grid - Fixed height container */}
-        <div className="grid grid-cols-3 grid-rows-2 gap-6 h-[500px] mb-8">
+        {/* Main Dashboard Grid - Auto-sizing container */}
+        <div className="grid grid-cols-3 grid-rows-2 gap-6 auto-rows-auto mb-12">
           {/* Top Row */}
           <div className="row-span-1">
             <DataIngestionPanel />
@@ -102,7 +102,7 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* Advanced Analytics Consoles - Fixed height horizontal scrollable */}
+        {/* Advanced Analytics Consoles - Horizontal scrollable */}
         <div className="mt-16">
           <h3 className="text-lg font-semibold mb-6 text-slate-700">Advanced Analytics Consoles</h3>
           <div className="w-full overflow-x-auto pb-4">
