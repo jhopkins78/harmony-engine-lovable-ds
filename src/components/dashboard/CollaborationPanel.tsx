@@ -3,7 +3,7 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Users, MessageSquare, GitBranch, Eye } from 'lucide-react';
+import { Users, MessageSquare, BarChart3, Eye } from 'lucide-react';
 
 const CollaborationPanel = () => {
   const collaborationData = [
@@ -14,47 +14,52 @@ const CollaborationPanel = () => {
   ];
 
   return (
-    <Card className="col-span-4 row-span-1 border-2 border-indigo-200 shadow-lg">
-      <CardHeader className="pb-3">
-        <CardTitle className="flex items-center gap-2 text-indigo-700">
-          <Users className="w-5 h-5" />
-          Real-Time Collaboration Hub
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        <div className="flex justify-between items-center">
-          <Badge className="bg-green-100 text-green-800">4 analysts active</Badge>
+    <Card className="h-full flex flex-col border-2 border-indigo-200 shadow-lg">
+      <CardHeader className="pb-4 flex-shrink-0">
+        <div className="flex items-center justify-between">
+          <CardTitle className="flex items-center gap-2 text-indigo-700 text-lg">
+            <Users className="w-5 h-5" />
+            Real-Time Collaboration Hub
+          </CardTitle>
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-            <span className="text-xs text-slate-600">Live sync</span>
+            <Badge variant="secondary" className="bg-green-100 text-green-800">
+              4 analysts active
+            </Badge>
+          </div>
+        </div>
+      </CardHeader>
+      
+      <CardContent className="flex-1 overflow-hidden space-y-4">
+        {/* Activity Feed */}
+        <div className="space-y-2">
+          <div className="text-sm font-medium text-slate-700">Team Activity Feed</div>
+          <div className="space-y-2 max-h-32 overflow-y-auto">
+            {collaborationData.map((activity, index) => (
+              <div key={index} className="flex items-start gap-2 p-2 bg-slate-50 rounded-lg border">
+                <div className={`w-2 h-2 rounded-full mt-2 flex-shrink-0 ${
+                  activity.type === 'bias' ? 'bg-red-500' :
+                  activity.type === 'suggestion' ? 'bg-yellow-500' :
+                  activity.type === 'validation' ? 'bg-green-500' : 'bg-blue-500'
+                }`}></div>
+                <div className="flex-1 min-w-0">
+                  <div className="text-sm font-medium text-slate-900">{activity.user}</div>
+                  <div className="text-xs text-slate-600 truncate">{activity.action}</div>
+                  <div className="text-xs text-slate-400">{activity.time}</div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
 
-        <div className="space-y-2 max-h-40 overflow-y-auto">
-          <div className="text-sm font-medium mb-2">Team Activity Feed</div>
-          {collaborationData.map((activity, index) => (
-            <div key={index} className="flex items-start gap-2 p-2 bg-slate-50 rounded border">
-              <div className={`w-2 h-2 rounded-full mt-2 ${
-                activity.type === 'bias' ? 'bg-red-500' :
-                activity.type === 'suggestion' ? 'bg-yellow-500' :
-                activity.type === 'validation' ? 'bg-green-500' : 'bg-blue-500'
-              }`}></div>
-              <div className="flex-1">
-                <div className="text-xs font-medium">{activity.user}</div>
-                <div className="text-xs text-slate-600">{activity.action}</div>
-                <div className="text-xs text-slate-400">{activity.time}</div>
-              </div>
-            </div>
-          ))}
-        </div>
-
+        {/* Action Buttons */}
         <div className="grid grid-cols-3 gap-2">
           <Button size="sm" className="text-xs bg-indigo-600 hover:bg-indigo-700">
             <MessageSquare className="w-3 h-3 mr-1" />
             Annotate
           </Button>
           <Button size="sm" variant="outline" className="text-xs">
-            <GitBranch className="w-3 h-3 mr-1" />
+            <BarChart3 className="w-3 h-3 mr-1" />
             Version
           </Button>
           <Button size="sm" variant="outline" className="text-xs">
@@ -63,8 +68,9 @@ const CollaborationPanel = () => {
           </Button>
         </div>
 
-        <div className="bg-indigo-50 p-2 rounded border border-indigo-200">
-          <div className="text-xs font-medium text-indigo-700 mb-1">Shared Workspace</div>
+        {/* Shared Workspace */}
+        <div className="bg-indigo-50 p-3 rounded-lg border border-indigo-200">
+          <div className="text-sm font-medium text-indigo-700 mb-1">Shared Workspace</div>
           <div className="text-xs text-indigo-600">
             Bias mitigation + Model optimization active
           </div>
