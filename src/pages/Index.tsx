@@ -74,10 +74,10 @@ const Dashboard = () => {
           <div className="flex items-center gap-2">
             <span className="text-sm font-medium text-slate-700">Dataset:</span>
             <Select value={selectedDatasetId} onValueChange={setSelectedDatasetId}>
-              <SelectTrigger className="w-64">
+              <SelectTrigger className="w-64 bg-white">
                 <SelectValue placeholder="Select a dataset..." />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="bg-white border border-slate-200 shadow-lg z-50">
                 {datasets.map((dataset) => (
                   <SelectItem key={dataset.id} value={dataset.id}>
                     {dataset.name} - {dataset.status}
@@ -141,24 +141,24 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* Advanced Analytics Consoles - Horizontal scrollable */}
-        <div className="mt-16">
+        {/* Advanced Analytics Consoles - Fixed height and proper visibility */}
+        <div className="mt-16 mb-8">
           <h3 className="text-lg font-semibold mb-6 text-slate-700">Advanced Analytics Consoles</h3>
           <div className="w-full overflow-x-auto pb-4">
-            <div className="flex gap-6 items-start min-h-[480px] scroll-smooth snap-x snap-mandatory">
-              <div className="flex-shrink-0 w-80 snap-start">
+            <div className="flex gap-6 items-start h-96 scroll-smooth snap-x snap-mandatory">
+              <div className="flex-shrink-0 w-80 snap-start h-full">
                 <TimeSeriesConsole />
               </div>
-              <div className="flex-shrink-0 w-80 snap-start">
+              <div className="flex-shrink-0 w-80 snap-start h-full">
                 <BayesianConsole />
               </div>
-              <div className="flex-shrink-0 w-80 snap-start">
+              <div className="flex-shrink-0 w-80 snap-start h-full">
                 <CausalInferenceConsole />
               </div>
-              <div className="flex-shrink-0 w-80 snap-start">
+              <div className="flex-shrink-0 w-80 snap-start h-full">
                 <AnomalyDetectionConsole />
               </div>
-              <div className="flex-shrink-0 w-80 snap-start">
+              <div className="flex-shrink-0 w-80 snap-start h-full">
                 <NLPConsole />
               </div>
             </div>
