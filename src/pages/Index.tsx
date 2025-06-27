@@ -29,7 +29,7 @@ const Dashboard = () => {
   const [showUploadPanel, setShowUploadPanel] = useState(false);
   const [selectedDatasetId, setSelectedDatasetId] = useState<string>('');
 
-  const { datasets, loading } = useHarmonyData(selectedDatasetId);
+  const { datasets, loading, error } = useHarmonyData(selectedDatasetId);
 
   // Simulate real-time updates
   useEffect(() => {
@@ -52,7 +52,8 @@ const Dashboard = () => {
     setIsRealTime(!isRealTime);
   };
 
-  if (loading) {
+  // Show loading only for initial data fetch, not when there are no datasets
+  if (loading && datasets.length === 0 && !error) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 flex items-center justify-center">
         <div className="text-lg text-slate-600">Loading Harmony Engine Dashboard...</div>
@@ -75,17 +76,26 @@ const Dashboard = () => {
             <span className="text-sm font-medium text-slate-700">Dataset:</span>
             <Select value={selectedDatasetId} onValueChange={setSelectedDatasetId}>
               <SelectTrigger className="w-64 bg-white">
-                <SelectValue placeholder="Select a dataset..." />
+                <SelectValue placeholder={datasets.length === 0 ? "No datasets available" : "Select a dataset..."} />
               </SelectTrigger>
               <SelectContent className="bg-white border border-slate-200 shadow-lg z-50">
-                {datasets.map((dataset) => (
-                  <SelectItem key={dataset.id} value={dataset.id}>
-                    {dataset.name} - {dataset.status}
-                  </SelectItem>
-                ))}
+                {datasets.length === 0 ? (
+                  <SelectItem value="" disabled>No datasets found</SelectItem>
+                ) : (
+                  datasets.map((dataset) => (
+                    <SelectItem key={dataset.id} value={dataset.id}>
+                      {dataset.name} - {dataset.status}
+                    </SelectItem>
+                  ))
+                )}
               </SelectContent>
             </Select>
           </div>
+          {datasets.length === 0 && (
+            <div className="text-sm text-amber-600 bg-amber-50 px-3 py-1 rounded-lg border border-amber-200">
+              No datasets found. Upload data to get started.
+            </div>
+          )}
         </div>
 
         {/* Data Upload Panel Toggle */}
