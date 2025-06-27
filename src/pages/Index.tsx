@@ -26,7 +26,7 @@ import { useHarmonyData } from '@/hooks/useHarmonyData';
 const Dashboard = () => {
   const [isRealTime, setIsRealTime] = useState(true);
   const [lastUpdate, setLastUpdate] = useState(new Date());
-  const [showUploadPanel, setShowUploadPanel] = useState(false);
+  const [showUploadPanel, setShowUploadPanel] = useState(true); // Show by default
   const [selectedDatasetId, setSelectedDatasetId] = useState<string>('');
 
   const { datasets, loading, error } = useHarmonyData(selectedDatasetId);
@@ -51,15 +51,6 @@ const Dashboard = () => {
   const handleToggleRealTime = () => {
     setIsRealTime(!isRealTime);
   };
-
-  // Show loading only for initial data fetch, not when there are no datasets
-  if (loading && datasets.length === 0 && !error) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 flex items-center justify-center">
-        <div className="text-lg text-slate-600">Loading Harmony Engine Dashboard...</div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 pb-20">
@@ -151,7 +142,7 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* Advanced Analytics Consoles - Fixed height and proper visibility */}
+        {/* Advanced Analytics Consoles */}
         <div className="mt-16 mb-8">
           <h3 className="text-lg font-semibold mb-6 text-slate-700">Advanced Analytics Consoles</h3>
           <div className="w-full overflow-x-auto pb-4">
