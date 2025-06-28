@@ -26,10 +26,10 @@ import { useHarmonyData } from '@/hooks/useHarmonyData';
 const Dashboard = () => {
   const [isRealTime, setIsRealTime] = useState(true);
   const [lastUpdate, setLastUpdate] = useState(new Date());
-  const [showUploadPanel, setShowUploadPanel] = useState(true); // Show by default
+  const [showUploadPanel, setShowUploadPanel] = useState(false);
   const [selectedDatasetId, setSelectedDatasetId] = useState<string>('');
 
-  const { datasets, loading, error } = useHarmonyData(selectedDatasetId);
+  const { datasets, loading } = useHarmonyData(selectedDatasetId);
 
   // Simulate real-time updates
   useEffect(() => {
@@ -52,6 +52,14 @@ const Dashboard = () => {
     setIsRealTime(!isRealTime);
   };
 
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 flex items-center justify-center">
+        <div className="text-lg text-slate-600">Loading Harmony Engine Dashboard...</div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 pb-20">
       <div className="container mx-auto px-6 py-6">
@@ -66,27 +74,18 @@ const Dashboard = () => {
           <div className="flex items-center gap-2">
             <span className="text-sm font-medium text-slate-700">Dataset:</span>
             <Select value={selectedDatasetId} onValueChange={setSelectedDatasetId}>
-              <SelectTrigger className="w-64 bg-white">
-                <SelectValue placeholder={datasets.length === 0 ? "No datasets available" : "Select a dataset..."} />
+              <SelectTrigger className="w-64">
+                <SelectValue placeholder="Select a dataset..." />
               </SelectTrigger>
-              <SelectContent className="bg-white border border-slate-200 shadow-lg z-50">
-                {datasets.length === 0 ? (
-                  <SelectItem value="" disabled>No datasets found</SelectItem>
-                ) : (
-                  datasets.map((dataset) => (
-                    <SelectItem key={dataset.id} value={dataset.id}>
-                      {dataset.name} - {dataset.status}
-                    </SelectItem>
-                  ))
-                )}
+              <SelectContent>
+                {datasets.map((dataset) => (
+                  <SelectItem key={dataset.id} value={dataset.id}>
+                    {dataset.name} - {dataset.status}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </div>
-          {datasets.length === 0 && (
-            <div className="text-sm text-amber-600 bg-amber-50 px-3 py-1 rounded-lg border border-amber-200">
-              No datasets found. Upload data to get started.
-            </div>
-          )}
         </div>
 
         {/* Data Upload Panel Toggle */}
@@ -142,24 +141,24 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* Advanced Analytics Consoles */}
-        <div className="mt-16 mb-8">
+        {/* Advanced Analytics Consoles - Horizontal scrollable */}
+        <div className="mt-16">
           <h3 className="text-lg font-semibold mb-6 text-slate-700">Advanced Analytics Consoles</h3>
           <div className="w-full overflow-x-auto pb-4">
-            <div className="flex gap-6 items-start h-96 scroll-smooth snap-x snap-mandatory">
-              <div className="flex-shrink-0 w-80 snap-start h-full">
+            <div className="flex gap-6 items-start min-h-[480px] scroll-smooth snap-x snap-mandatory">
+              <div className="flex-shrink-0 w-80 snap-start">
                 <TimeSeriesConsole />
               </div>
-              <div className="flex-shrink-0 w-80 snap-start h-full">
+              <div className="flex-shrink-0 w-80 snap-start">
                 <BayesianConsole />
               </div>
-              <div className="flex-shrink-0 w-80 snap-start h-full">
+              <div className="flex-shrink-0 w-80 snap-start">
                 <CausalInferenceConsole />
               </div>
-              <div className="flex-shrink-0 w-80 snap-start h-full">
+              <div className="flex-shrink-0 w-80 snap-start">
                 <AnomalyDetectionConsole />
               </div>
-              <div className="flex-shrink-0 w-80 snap-start h-full">
+              <div className="flex-shrink-0 w-80 snap-start">
                 <NLPConsole />
               </div>
             </div>
