@@ -1,15 +1,15 @@
 
 import React, { useState, useEffect } from 'react';
 import DashboardHeader from '@/components/dashboard/DashboardHeader';
-import LiveDataIngestionPanel from '@/components/dashboard/LiveDataIngestionPanel';
+import DataIngestionPanel from '@/components/dashboard/DataIngestionPanel';
 import DataTransformationPanel from '@/components/dashboard/DataTransformationPanel';
 import ModelPerformancePanel from '@/components/dashboard/ModelPerformancePanel';
 import BiasDetectionPanel from '@/components/dashboard/BiasDetectionPanel';
 import CollaborationPanel from '@/components/dashboard/CollaborationPanel';
 import ExperimentationPanel from '@/components/dashboard/ExperimentationPanel';
 import FeatureEngineeringPanel from '@/components/dashboard/FeatureEngineeringPanel';
-import LivePipelineOrchestrationPanel from '@/components/dashboard/LivePipelineOrchestrationPanel';
-import LiveModelExplainabilityPanel from '@/components/dashboard/LiveModelExplainabilityPanel';
+import PipelineOrchestrationPanel from '@/components/dashboard/PipelineOrchestrationPanel';
+import ModelExplainabilityPanel from '@/components/dashboard/ModelExplainabilityPanel';
 import MemoryGraphPanel from '@/components/dashboard/MemoryGraphPanel';
 import StructuredDataUploadConsole from '@/components/dashboard/StructuredDataUploadConsole';
 import UnstructuredDataUploadConsole from '@/components/dashboard/UnstructuredDataUploadConsole';
@@ -19,17 +19,12 @@ import CausalInferenceConsole from '@/components/dashboard/CausalInferenceConsol
 import AnomalyDetectionConsole from '@/components/dashboard/AnomalyDetectionConsole';
 import NLPConsole from '@/components/dashboard/NLPConsole';
 import { Button } from '@/components/ui/button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { FileText, Database, Code, BarChart3, ChevronDown, ChevronUp } from 'lucide-react';
-import { useHarmonyData } from '@/hooks/useHarmonyData';
 
 const Dashboard = () => {
   const [isRealTime, setIsRealTime] = useState(true);
   const [lastUpdate, setLastUpdate] = useState(new Date());
   const [showUploadPanel, setShowUploadPanel] = useState(false);
-  const [selectedDatasetId, setSelectedDatasetId] = useState<string>('');
-
-  const { datasets, loading } = useHarmonyData(selectedDatasetId);
 
   // Simulate real-time updates
   useEffect(() => {
@@ -41,24 +36,9 @@ const Dashboard = () => {
     }
   }, [isRealTime]);
 
-  // Auto-select first dataset if available
-  useEffect(() => {
-    if (datasets.length > 0 && !selectedDatasetId) {
-      setSelectedDatasetId(datasets[0].id);
-    }
-  }, [datasets, selectedDatasetId]);
-
   const handleToggleRealTime = () => {
     setIsRealTime(!isRealTime);
   };
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 flex items-center justify-center">
-        <div className="text-lg text-slate-600">Loading Harmony Engine Dashboard...</div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 pb-20">
@@ -68,25 +48,6 @@ const Dashboard = () => {
           lastUpdate={lastUpdate}
           onToggleRealTime={handleToggleRealTime}
         />
-
-        {/* Dataset Selection */}
-        <div className="mb-4 flex items-center gap-4">
-          <div className="flex items-center gap-2">
-            <span className="text-sm font-medium text-slate-700">Dataset:</span>
-            <Select value={selectedDatasetId} onValueChange={setSelectedDatasetId}>
-              <SelectTrigger className="w-64">
-                <SelectValue placeholder="Select a dataset..." />
-              </SelectTrigger>
-              <SelectContent>
-                {datasets.map((dataset) => (
-                  <SelectItem key={dataset.id} value={dataset.id}>
-                    {dataset.name} - {dataset.status}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-        </div>
 
         {/* Data Upload Panel Toggle */}
         <div className="mb-4">
@@ -113,7 +74,7 @@ const Dashboard = () => {
         <div className="grid grid-cols-3 grid-rows-2 gap-6 auto-rows-auto mb-12">
           {/* Top Row */}
           <div className="row-span-1">
-            <LiveDataIngestionPanel datasetId={selectedDatasetId} />
+            <DataIngestionPanel />
           </div>
           <div className="row-span-1">
             <DataTransformationPanel />
@@ -129,10 +90,10 @@ const Dashboard = () => {
                 <FeatureEngineeringPanel />
               </div>
               <div>
-                <LivePipelineOrchestrationPanel datasetId={selectedDatasetId} />
+                <PipelineOrchestrationPanel />
               </div>
               <div>
-                <LiveModelExplainabilityPanel datasetId={selectedDatasetId} />
+                <ModelExplainabilityPanel />
               </div>
               <div>
                 <MemoryGraphPanel />
