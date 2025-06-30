@@ -31,7 +31,7 @@ interface DataIngestionResponse {
 
 const fetchDataIngestionQuality = async (): Promise<DataIngestionResponse> => {
   console.log('Fetching data from FastAPI backend...');
-  const response = await fetch('https://abc123.ngrok.io/api/data-ingestion-quality');
+  const response = await fetch('https://8fc6-169-231-206-83.ngrok-free.app/api/data-ingestion-quality');
   
   if (!response.ok) {
     throw new Error(`HTTP error! status: ${response.status}`);
