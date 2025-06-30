@@ -13,6 +13,7 @@ import ModelExplainabilityPanel from '@/components/dashboard/ModelExplainability
 import MemoryGraphPanel from '@/components/dashboard/MemoryGraphPanel';
 import StructuredDataUploadConsole from '@/components/dashboard/StructuredDataUploadConsole';
 import UnstructuredDataUploadConsole from '@/components/dashboard/UnstructuredDataUploadConsole';
+import EDAInsightsPanel from '@/components/dashboard/EDAInsightsPanel';
 import TimeSeriesConsole from '@/components/dashboard/TimeSeriesConsole';
 import BayesianConsole from '@/components/dashboard/BayesianConsole';
 import CausalInferenceConsole from '@/components/dashboard/CausalInferenceConsole';
@@ -64,10 +65,17 @@ const Dashboard = () => {
 
         {/* Data Upload Consoles */}
         {showUploadPanel && (
-          <div className="grid grid-cols-2 gap-6 mb-6">
-            <StructuredDataUploadConsole />
-            <UnstructuredDataUploadConsole />
-          </div>
+          <>
+            <div className="grid grid-cols-2 gap-6 mb-6">
+              <StructuredDataUploadConsole />
+              <UnstructuredDataUploadConsole />
+            </div>
+            
+            {/* EDA Insights Panel */}
+            <div className="mb-6">
+              <EDAInsightsPanel />
+            </div>
+          </>
         )}
 
         {/* Main Dashboard Grid - Auto-sizing container */}
