@@ -1,3 +1,4 @@
+
 import React, { useState, useCallback } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -5,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { FileText, Upload, File, Music, Image, CheckCircle, AlertCircle, Filter } from 'lucide-react';
+import { BASE_API_URL } from '@/config/api';
 
 const UnstructuredDataUploadConsole = () => {
   const [dragActive, setDragActive] = useState(false);
@@ -50,7 +52,7 @@ const UnstructuredDataUploadConsole = () => {
         formData.append('files', file);
       });
 
-      const response = await fetch('https://8fc6-169-231-206-83.ngrok-free.app/api/upload-file', {
+      const response = await fetch(`${BASE_API_URL}/upload-file`, {
         method: 'POST',
         body: formData,
         headers: {

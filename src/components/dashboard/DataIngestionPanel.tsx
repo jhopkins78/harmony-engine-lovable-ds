@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
@@ -7,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { Database, AlertTriangle, Eye, BarChart3 } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
+import { BASE_API_URL } from '@/config/api';
 
 interface QualityMetric {
   type: string;
@@ -31,7 +31,7 @@ interface DataIngestionResponse {
 
 const fetchDataIngestionQuality = async (): Promise<DataIngestionResponse> => {
   console.log('Fetching data from FastAPI backend...');
-  const response = await fetch('https://02b4686d7c03.ngrok.app/api/data-ingestion-quality', {
+  const response = await fetch(`${BASE_API_URL}/data-ingestion-quality`, {
     headers: {
       'ngrok-skip-browser-warning': 'true',
       'Content-Type': 'application/json',
