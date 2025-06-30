@@ -50,7 +50,7 @@ const StructuredDataUploadConsole = () => {
       const formData = new FormData();
       formData.append('file', file);
 
-      const response = await fetch('https://8fc6-169-231-206-83.ngrok-free.app/api/upload-file', {
+      const response = await fetch('https://02b4686d7c03.ngrok-free.app/api/upload-file', {
         method: 'POST',
         body: formData,
         headers: {
