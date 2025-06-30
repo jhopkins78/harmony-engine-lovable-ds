@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import DashboardHeader from '@/components/dashboard/DashboardHeader';
 import DataIngestionPanel from '@/components/dashboard/DataIngestionPanel';
@@ -65,18 +64,16 @@ const Dashboard = () => {
 
         {/* Data Upload Consoles */}
         {showUploadPanel && (
-          <>
-            <div className="grid grid-cols-2 gap-6 mb-6">
-              <StructuredDataUploadConsole />
-              <UnstructuredDataUploadConsole />
-            </div>
-            
-            {/* EDA Insights Panel */}
-            <div className="mb-6">
-              <EDAInsightsPanel />
-            </div>
-          </>
+          <div className="grid grid-cols-2 gap-6 mb-6">
+            <StructuredDataUploadConsole />
+            <UnstructuredDataUploadConsole />
+          </div>
         )}
+
+        {/* EDA Insights Panel - Always visible */}
+        <div className="mb-6">
+          <EDAInsightsPanel />
+        </div>
 
         {/* Main Dashboard Grid - Auto-sizing container */}
         <div className="grid grid-cols-3 grid-rows-2 gap-6 auto-rows-auto mb-12">
