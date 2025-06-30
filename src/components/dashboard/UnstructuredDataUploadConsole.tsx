@@ -1,5 +1,4 @@
-
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -15,6 +14,7 @@ const UnstructuredDataUploadConsole = () => {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [processingIntent, setProcessingIntent] = useState<string>('');
   const [fileTypeFilter, setFileTypeFilter] = useState<string>('all');
+  const fileInputRef = React.useRef<HTMLInputElement>(null);
 
   const handleDrag = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -77,6 +77,21 @@ const UnstructuredDataUploadConsole = () => {
       console.error('Upload error:', error);
       setUploadStatus('error');
       setUploadProgress(0);
+    }
+  };
+
+  const handleBrowseClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    const validFiles = files.filter(file => 
+      file.name.match(/\.(pdf|txt|docx|mp3|wav|json)$/i)
+    );
+    
+    if (validFiles.length > 0) {
+      handleFileUpload(validFiles);
     }
   };
 
@@ -177,10 +192,18 @@ const UnstructuredDataUploadConsole = () => {
           <p className="text-xs text-purple-500 mb-3">
             Supports: .pdf, .txt, .docx, .mp3, .wav, .json
           </p>
-          <Button size="sm" variant="outline">
+          <Button size="sm" variant="outline" onClick={handleBrowseClick}>
             <Upload className="w-4 h-4 mr-2" />
             Browse Files
           </Button>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept=".pdf,.txt,.docx,.mp3,.wav,.json"
+            multiple
+            onChange={handleFileInputChange}
+            className="hidden"
+          />
         </div>
 
         {/* Upload Progress */}

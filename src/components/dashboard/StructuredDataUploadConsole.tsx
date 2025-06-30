@@ -1,5 +1,4 @@
-
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -17,6 +16,7 @@ const StructuredDataUploadConsole = () => {
   const [skipHeader, setSkipHeader] = useState(false);
   const [inferTypes, setInferTypes] = useState(true);
   const [previewData, setPreviewData] = useState<any[]>([]);
+  const fileInputRef = React.useRef<HTMLInputElement>(null);
 
   const handleDrag = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -88,6 +88,17 @@ const StructuredDataUploadConsole = () => {
     }
   };
 
+  const handleBrowseClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file && file.name.match(/\.(csv|xlsx|parquet)$/i)) {
+      handleFileUpload(file);
+    }
+  };
+
   const getStatusBadge = () => {
     switch (uploadStatus) {
       case 'idle':
@@ -135,10 +146,17 @@ const StructuredDataUploadConsole = () => {
           <p className="text-xs text-blue-500 mb-3">
             Supports: .csv, .xlsx, .parquet
           </p>
-          <Button size="sm" variant="outline">
+          <Button size="sm" variant="outline" onClick={handleBrowseClick}>
             <Upload className="w-4 h-4 mr-2" />
             Browse Files
           </Button>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept=".csv,.xlsx,.parquet"
+            onChange={handleFileInputChange}
+            className="hidden"
+          />
         </div>
 
         {/* Upload Progress */}
