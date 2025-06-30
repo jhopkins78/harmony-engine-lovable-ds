@@ -1,4 +1,3 @@
-
 import React, { useState, useCallback } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -42,32 +41,49 @@ const StructuredDataUploadConsole = () => {
     }
   }, []);
 
-  const handleFileUpload = (file: File) => {
+  const handleFileUpload = async (file: File) => {
     setSelectedFile(file);
     setUploadStatus('uploading');
     setUploadProgress(0);
 
-    // Simulate upload progress
-    const interval = setInterval(() => {
-      setUploadProgress(prev => {
-        if (prev >= 100) {
-          clearInterval(interval);
-          setUploadStatus('validating');
-          setTimeout(() => {
-            setUploadStatus('uploaded');
-            setPreviewData([
-              { id: 1, name: 'Sample A', value: 123.45, category: 'Type 1' },
-              { id: 2, name: 'Sample B', value: 67.89, category: 'Type 2' },
-              { id: 3, name: 'Sample C', value: 234.56, category: 'Type 1' },
-              { id: 4, name: 'Sample D', value: 98.76, category: 'Type 3' },
-              { id: 5, name: 'Sample E', value: 156.78, category: 'Type 2' }
-            ]);
-          }, 1500);
-          return 100;
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const response = await fetch('https://8fc6-169-231-206-83.ngrok-free.app/api/upload-file', {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'ngrok-skip-browser-warning': 'true'
         }
-        return prev + 10;
       });
-    }, 200);
+
+      const result = await response.json();
+      console.log('Upload result:', result);
+
+      if (response.ok) {
+        setUploadProgress(100);
+        setUploadStatus('validating');
+        
+        setTimeout(() => {
+          setUploadStatus('uploaded');
+          // Set preview data from API response or mock data
+          setPreviewData(result.preview || [
+            { id: 1, name: 'Sample A', value: 123.45, category: 'Type 1' },
+            { id: 2, name: 'Sample B', value: 67.89, category: 'Type 2' },
+            { id: 3, name: 'Sample C', value: 234.56, category: 'Type 1' },
+            { id: 4, name: 'Sample D', value: 98.76, category: 'Type 3' },
+            { id: 5, name: 'Sample E', value: 156.78, category: 'Type 2' }
+          ]);
+        }, 1500);
+      } else {
+        throw new Error(result.message || 'Upload failed');
+      }
+    } catch (error) {
+      console.error('Upload error:', error);
+      setUploadStatus('error');
+      setUploadProgress(0);
+    }
   };
 
   const getStatusBadge = () => {

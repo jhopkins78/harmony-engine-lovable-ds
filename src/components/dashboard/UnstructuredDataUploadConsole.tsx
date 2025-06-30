@@ -1,4 +1,3 @@
-
 import React, { useState, useCallback } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -40,25 +39,43 @@ const UnstructuredDataUploadConsole = () => {
     }
   }, []);
 
-  const handleFileUpload = (files: File[]) => {
+  const handleFileUpload = async (files: File[]) => {
     setSelectedFiles(files);
     setUploadStatus('uploading');
     setUploadProgress(0);
 
-    // Simulate upload progress
-    const interval = setInterval(() => {
-      setUploadProgress(prev => {
-        if (prev >= 100) {
-          clearInterval(interval);
-          setUploadStatus('processing');
-          setTimeout(() => {
-            setUploadStatus('uploaded');
-          }, 2000);
-          return 100;
-        }
-        return prev + 8;
+    try {
+      const formData = new FormData();
+      files.forEach(file => {
+        formData.append('files', file);
       });
-    }, 300);
+
+      const response = await fetch('https://8fc6-169-231-206-83.ngrok-free.app/api/upload-file', {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'ngrok-skip-browser-warning': 'true'
+        }
+      });
+
+      const result = await response.json();
+      console.log('Upload result:', result);
+
+      if (response.ok) {
+        setUploadProgress(100);
+        setUploadStatus('processing');
+        
+        setTimeout(() => {
+          setUploadStatus('uploaded');
+        }, 2000);
+      } else {
+        throw new Error(result.message || 'Upload failed');
+      }
+    } catch (error) {
+      console.error('Upload error:', error);
+      setUploadStatus('error');
+      setUploadProgress(0);
+    }
   };
 
   const getFileIcon = (fileName: string) => {
